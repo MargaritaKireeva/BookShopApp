@@ -1,0 +1,34 @@
+﻿@page "/genres"
+@using BookShopApp.Shared
+@inject HttpClient Http
+
+
+<PageTitle>Genres</PageTitle>
+
+<h1>Жанры книг</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (genres == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var genre in genres)
+        {
+            <li><a href="/genres/@genre.Title">@genre._id @genre.Title</a></li>
+@*             <li><a asp-page="/genres/books" asp-route-GenreID="@genre._id">@genre.Title</a></li> *@
+        }
+    </ul>
+}
+
+@code {
+    private List<Genre> genres { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        genres = await Http.GetFromJsonAsync<List<Genre>>("/genres");
+    }
+}
