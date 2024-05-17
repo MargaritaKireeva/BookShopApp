@@ -1,5 +1,40 @@
-﻿<h3>BookById</h3>
+﻿@page "/Genres/GetBooks/{genreId}/GetBookById/{bookId}"
+@* написать типо всё в контроллер жанров *@
+@using BookShopApp.Shared
+@inject HttpClient Http
+
+<PageTitle>book</PageTitle>
+
+@* <h1>Книги жанра @genreId</h1> *@
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (book == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+             @book.Title @book.Author
+            @*             <li><a href="/Books/{GenreID}/@book._id">@book.Title by @book.Author</a></li> *@
+
+    @*             <td>@genre.Description</td>
+            <td>
+                <a href="@($"/genres/{genre.Id}")">Details</a>
+            </td> *@
+}
+
 
 @code {
+    [Parameter]
+    public string bookId { get; set; }
 
+    private Book book { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //books = await Http.GetFromJsonAsync<List<Book>>($"api/Books/GetBooksByGenre/{genre}");
+        book = await Http.GetFromJsonAsync<Book>("GetBookById/{bookId}");
+    }
 }

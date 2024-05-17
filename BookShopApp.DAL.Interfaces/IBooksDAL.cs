@@ -5,7 +5,7 @@ namespace BookShopApp.DAL.Interfaces
 {
     public interface IBooksDAL
     {
-        public Task<List<Book>> GetAllAsync(string Genre);
-       /* public Task<Book> GetByIDAsync(int BookID);*/
+        public Task<List<Book>> GetAllAsync(string id);
+        public Task<Book> GetByIdAsync(string bookId);
     }
 }

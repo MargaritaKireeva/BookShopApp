@@ -1,4 +1,4 @@
-﻿@page "/genres"
+﻿@page "/Genres"
 @using BookShopApp.Shared
 @inject HttpClient Http
 
@@ -18,7 +18,7 @@ else
     <ul>
         @foreach (var genre in genres)
         {
-            <li><a href="/genres/@genre.Title">@genre._id @genre.Title</a></li>
+            <li><a href="/genres/@genre.Id">@genre.Id @genre.Title</a></li>
 @*             <li><a asp-page="/genres/books" asp-route-GenreID="@genre._id">@genre.Title</a></li> *@
         }
     </ul>

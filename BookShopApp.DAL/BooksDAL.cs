@@ -22,56 +22,17 @@ namespace BookShopApp.DAL
             _collection = mongoClient.GetDatabase("books_db").GetCollection<Book>("books");
         }
 
-        public async Task<List<Book>> GetAllAsync(string Genre)
+        public async Task<List<Book>> GetAllAsync(string id)
         {
-            var filter = Builders<Book>.Filter.Eq(b => b.Genre, Genre);
-            return await _collection.Find(filter).ToListAsync();
+            /*            var filter = Builders<Book>.Filter.Eq(b => b.Genre, Genre);
+                        List<Book> books = await _collection.Find(filter).ToListAsync();
+                        return books;*/
+            var books = await _collection.Find(new BsonDocument("GenreId", ObjectId.Parse(id))).ToListAsync();
+
+            return books;
         }
 
-/*        public async Task InsertOneAsync(Book book)
-        {
-            await _collection.InsertOneAsync(book);
-        }*/
+        public async Task<Book?> GetByIdAsync(string bookId) =>
+            await _collection.Find(x => x.Id == bookId).FirstOrDefaultAsync();
     }
-/*        public async Task<List<Entities.Book>> GetAllBooksAsync(int CategoryID)
-        {
-            using (var context = new DefaultDbContext())
-            {
-                return context.Books.ToList().Select(book => new Entities.Book()
-                {
-                    ID = book.Id,
-                    Name = book.Name,
-                    Author = book.Author,
-                    Amount = book.Amount,
-                    ReleaseYear = book.ReleaseYear,
-                    PagesNumber = book.PagesNumber,
-                    AgeRestriction = book.AgeRestriction,
-                    Description = book.Description,
-                    Picture = book.Picture,
-                    Price = book.Price,
-                    CategoryID = book.CategoryId
-                }).Where(item => item.CategoryID == CategoryID).ToList();
-            }
-        }
-        public async Task<Entities.Book> GetByIDAsync(int BookID)
-        {
-            using (var context = new DefaultDbContext())
-            {
-                var book = context.Books.ToList().Where(book => book.Id == BookID).FirstOrDefault();
-                return new Entities.Book()
-                {
-                    ID = book.Id,
-                    Name = book.Name,
-                    Author = book.Author,
-                    Amount = book.Amount,
-                    ReleaseYear = book.ReleaseYear,
-                    PagesNumber = book.PagesNumber,
-                    AgeRestriction = book.AgeRestriction,
-                    Description = book.Description,
-                    Picture = book.Picture,
-                    Price = book.Price,
-                    CategoryID = book.CategoryId
-                };
-            }
-        }*/
 }

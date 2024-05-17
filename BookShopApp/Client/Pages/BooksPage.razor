@@ -1,11 +1,11 @@
-﻿@page "/genres/{genre}"
+﻿@page "/Genres/GetBooks/{genreId}"
+@* написать типо всё в контроллер жанров *@
 @using BookShopApp.Shared
 @inject HttpClient Http
-@inject NavigationManager NavigationManager
 
 <PageTitle>books</PageTitle>
 
-<h1>Книги жанра @genre</h1>
+@* <h1>Книги жанра @genreId</h1> *@
 
 <p>This component demonstrates fetching data from the server.</p>
 
@@ -18,25 +18,22 @@ else
     <ul>
         @foreach (var book in books)
         {
-            <li>@book.Title by @book.Author</li>
-@*             <li><a href="/Books/{GenreID}/@book._id">@book.Title by @book.Author</a></li> *@
+            <li>book.Title</li>
+            @* <li><a href="/genres/@genreId/@book.Id"> @book.Title</a></li> *@
         }
     </ul>
-@*             <td>@genre.Description</td>
-            <td>
-                <a href="@($"/genres/{genre.Id}")">Details</a>
-            </td> *@
-    }
 }
+
 
 @code {
     [Parameter]
-    public string genre { get; set; }
+    public string genreId { get; set; }
 
     private List<Book> books { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        books = await Http.GetFromJsonAsync<List<Book>>("api/Books/GetBooksByGenre/{genre}");
+        //books = await Http.GetFromJsonAsync<List<Book>>($"api/Books/GetBooksByGenre/{genre}");
+        books = await Http.GetFromJsonAsync<List<Book>>("GetBooks/{genreId}");
     }
 }

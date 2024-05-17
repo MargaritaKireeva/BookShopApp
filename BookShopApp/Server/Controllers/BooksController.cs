@@ -1,4 +1,5 @@
 using BookShopApp.BLL.Interfaces;
+using BookShopApp.Client.Pages;
 using BookShopApp.Shared;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -6,7 +7,7 @@ using MongoDB.Bson;
 namespace BookShopApp.Server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class BooksController : ControllerBase
     {
         private IBooksBL _booksBL;
@@ -19,11 +20,13 @@ namespace BookShopApp.Server.Controllers
         }
 
 
-        [HttpGet]
-        [Route("api/Books/GetBooksByGenre/{genre}")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByGenre(string Genre)
+        [HttpGet("{genreId:length(24)}")]
+        /*[Route("genres/{genre}")]*/
+        public async Task<ActionResult<IEnumerable<Book>>> Get(string genreId)
         {
-            return await _booksBL.GetAllAsync(Genre);
+            /*genre = "Фантастика";*/
+           /* var books = */
+            return await _booksBL.GetAllAsync(genreId);
         }
 
     }

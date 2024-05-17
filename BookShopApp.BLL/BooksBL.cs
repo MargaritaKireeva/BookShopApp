@@ -15,13 +15,13 @@ namespace BookShopApp.BLL
         {
             _booksDAL = booksDAL;
         }
-        public async Task<List<Book>> GetAllAsync(string Genre)
+        public async Task<List<Book>> GetAllAsync(string id)
         {
-            return await _booksDAL.GetAllAsync(Genre);
+            return await _booksDAL.GetAllAsync(id);
         }
-/*        public async Task<Book> GetByIDAsync(int BookID)
+        public async Task<Book?> GetByIdAsync(string BookId)
         {
-            return await _booksDAL.GetByIDAsync(BookID);
-        }*/
+            return await _booksDAL.GetByIdAsync(BookId);
+        }
     }
 }
