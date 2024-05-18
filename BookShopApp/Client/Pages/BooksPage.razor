@@ -1,13 +1,11 @@
-﻿@page "/Genres/GetBooks/{genreId}"
-@* написать типо всё в контроллер жанров *@
+﻿@page "/Genres/{genreId}"
 @using BookShopApp.Shared
 @inject HttpClient Http
 
-<PageTitle>books</PageTitle>
+<PageTitle>Books</PageTitle>
 
 @* <h1>Книги жанра @genreId</h1> *@
 
-<p>This component demonstrates fetching data from the server.</p>
 
 @if (books == null)
 {
@@ -18,8 +16,8 @@ else
     <ul>
         @foreach (var book in books)
         {
-            <li>book.Title</li>
-            @* <li><a href="/genres/@genreId/@book.Id"> @book.Title</a></li> *@
+            @* <li>@book.Title</li> *@
+            <li><a href="/Genres/@genreId/@book.Id"> @book.Title</a></li>
         }
     </ul>
 }
@@ -34,6 +32,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         //books = await Http.GetFromJsonAsync<List<Book>>($"api/Books/GetBooksByGenre/{genre}");
-        books = await Http.GetFromJsonAsync<List<Book>>("GetBooks/{genreId}");
+        books = await Http.GetFromJsonAsync<List<Book>>($"/Genres/{genreId}");
     }
 }

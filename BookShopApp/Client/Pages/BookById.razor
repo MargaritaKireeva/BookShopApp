@@ -1,13 +1,47 @@
-﻿@page "/Genres/GetBooks/{genreId}/GetBookById/{bookId}"
-@* написать типо всё в контроллер жанров *@
+﻿@page "/Genres/{genreId}/{bookId}"
 @using BookShopApp.Shared
 @inject HttpClient Http
 
 <PageTitle>book</PageTitle>
 
-@* <h1>Книги жанра @genreId</h1> *@
+<style>
+    .content {
+    display: flex;
+    flex-direction: column;
+}
 
-<p>This component demonstrates fetching data from the server.</p>
+.content__container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content__img {
+    flex-basis: 30%;
+}
+
+    .content__img img {
+        max-width: 100%;
+        height: auto;
+    }
+
+.content__charact {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content__charact__item {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.content__price {
+    flex-basis: 20%;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right;
+}
+</style>
 
 @if (book == null)
 {
@@ -15,26 +49,55 @@
 }
 else
 {
+    <div class="content">
+        <h1 class="content__title">@book.Title</h1>
+        <div class="content__container">
+            <div class="content__img">
+                <img src="@book.Picture" alt="2405917" border="0">
+            </div>
 
-             @book.Title @book.Author
-            @*             <li><a href="/Books/{GenreID}/@book._id">@book.Title by @book.Author</a></li> *@
-
-    @*             <td>@genre.Description</td>
-            <td>
-                <a href="@($"/genres/{genre.Id}")">Details</a>
-            </td> *@
+            <div class="content__charact">
+                <div class="content__charact__item">
+                    <p>Автор: @book.Author</p>
+                </div>
+                <div class="content__charact__item">
+                    <p>ID товара: @book.Id</p>
+                </div>
+                <div class="content__charact__item">
+                    <p>Год издания: @book.ReleaseYear</p>
+                </div>
+                <div class="content__charact__item">
+                    <p>Количество страниц: @book.PagesNumber</p>
+                </div>
+                <div class="content__charact__item">
+                    <p>Тираж: @book.Amount</p>
+                </div>
+                <div class="content__charact__item">
+                    <p>Возрастные ограничения: @book.AgeRestriction+</p>
+                </div>
+                <div class="content__charact__item">
+                    <p>Описание:</p><p>@book.Description</p>
+                </div>
+            </div>
+            <div class="content__price">
+                <p>@book.Price ₽</p>
+            </div>
+        </div>
+    </div>
 }
 
 
 @code {
     [Parameter]
     public string bookId { get; set; }
+    [Parameter]
+    public string genreId { get; set; }
 
     private Book book { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         //books = await Http.GetFromJsonAsync<List<Book>>($"api/Books/GetBooksByGenre/{genre}");
-        book = await Http.GetFromJsonAsync<Book>("GetBookById/{bookId}");
+        book = await Http.GetFromJsonAsync<Book>($"Genres/{genreId}/{bookId}");
     }
 }

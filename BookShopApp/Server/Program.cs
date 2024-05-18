@@ -15,6 +15,8 @@ builder.Services.AddScoped<IBooksBL, BooksBL>();
 builder.Services.AddScoped<IBooksDAL, BooksDAL>();
 
 builder.Services.AddControllersWithViews();
+/* .AddJsonOptions(
+        options => options.JsonSerializerOptions.PropertyNamingPolicy = null);*/
 builder.Services.AddRazorPages();
 builder.Services.AddCors(options =>
 {
@@ -49,9 +51,12 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllerRoute(
+/*    endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{controller=Home}/{action=Index}/{id?}");*/
+    endpoints.MapControllerRoute(
+    name: "Genres",
+    pattern: "/Genres/{genreId}");
 });
 
 app.MapRazorPages();

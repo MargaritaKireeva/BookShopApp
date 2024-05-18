@@ -20,6 +20,7 @@ namespace BookShopApp.Server.Controllers
         }
 
         [HttpGet]
+        [Route("/[controller]")]
         public async Task<ActionResult<IEnumerable<Genre>>> Get()
         {
 /*            List<Genre> genres = await _genresBL.GetAllAsync();*/
@@ -27,8 +28,8 @@ namespace BookShopApp.Server.Controllers
         }
 
         [HttpGet("{genreId:length(24)}")]
-        /*[Route("genres/{genre}")]*/
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks(string genreId)
+        [Route("/Genres/{genreId}")]
+        public async Task<ActionResult<IEnumerable<Book>>> Get(string genreId)
         {
             /*genre = "Фантастика";*/
             /* var books = */
@@ -36,8 +37,8 @@ namespace BookShopApp.Server.Controllers
             return books;
         }
 
-        [HttpGet("{genreId:length(24)}/GetBooks/{bookId:length(24)}")]
-        /*[Route("genres/{genre}")]*/
+        [HttpGet("{genreId:length(24)}/{bookId:length(24)}")]
+        [Route("/Genres/{genreId}/{bookId}")]
         public async Task<ActionResult<Book>> GetBookById(string bookId)
         {
             /*genre = "Фантастика";*/
