@@ -31,7 +31,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //books = await Http.GetFromJsonAsync<List<Book>>($"api/Books/GetBooksByGenre/{genre}");
         books = await Http.GetFromJsonAsync<List<Book>>($"/Genres/{genreId}");
     }
 }

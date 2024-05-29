@@ -2,6 +2,7 @@ using BookShopApp.BLL;
 using BookShopApp.BLL.Interfaces;
 using BookShopApp.DAL;
 using BookShopApp.DAL.Interfaces;
+using BookShopApp.Server.RabbitMQ;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.AddScoped<IGenresBL, GenresBL>();
 builder.Services.AddScoped<IGenresDAL, GenresDAL>();
 builder.Services.AddScoped<IBooksBL, BooksBL>();
 builder.Services.AddScoped<IBooksDAL, BooksDAL>();
+builder.Services.AddScoped<IFeedbackBL, FeedbackBL>();
+builder.Services.AddScoped<IFeedbackDAL, FeedbackDAL>();
+builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 
 builder.Services.AddControllersWithViews();
 /* .AddJsonOptions(

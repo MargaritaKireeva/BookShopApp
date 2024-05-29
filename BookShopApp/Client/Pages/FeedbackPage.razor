@@ -1,0 +1,44 @@
+﻿@page "/Feedback"
+@using BookShopApp.Shared
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Forms
+@inject HttpClient Http
+
+<PageTitle>Feedback</PageTitle>
+<div style="color:green;">@message</div>
+<EditForm Model=@feedback OnSubmit="Submit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="Name">Ваше имя: </label>
+        <InputText @bind-Value=feedback.Name class="form-control" id="Name" />
+        <ValidationMessage For="() => feedback.Name" />
+    </div>
+    <div class="form-group">
+        <label for="Message"> Текст сообщения: </label>
+        <InputTextArea @bind-Value=feedback.Message class="form-control" id="Message" />
+        <ValidationMessage For="() => feedback.Message" />
+    </div>
+    <div class="form-group">
+        <label for="Email">Почта для обратной связи:</label>
+        <InputText @bind-Value=feedback.Email class="form-control" id="Email" />
+        <ValidationMessage For="() => feedback.Email" />
+    </div>
+@*     <button type="submit">Отправить</button> *@
+  <input type="submit" class="btn btn-primary" value="Отправить"/>
+</EditForm>
+
+@code {
+    string? message;
+    Feedback feedback = new Feedback();
+    async Task Submit()
+    {
+        var response = await Http.PostAsJsonAsync("Feedback", feedback);
+        if (response.IsSuccessStatusCode)
+        {
+            var newFeedback = await response.Content.ReadFromJsonAsync<Feedback>();
+            if (newFeedback != null) message = $"{newFeedback.Name}, ваше сообщение отправлено!";
+        }
+        feedback = new Feedback();
+    }
+}
+
