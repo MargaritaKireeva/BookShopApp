@@ -30,15 +30,23 @@
 @code {
     string? message;
     Feedback feedback = new Feedback();
-    async Task Submit()
+    async Task Submit(EditContext editContext)
     {
-        var response = await Http.PostAsJsonAsync("Feedback", feedback);
-        if (response.IsSuccessStatusCode)
+        bool formIsValid = editContext.Validate();
+        if (formIsValid)
         {
-            var newFeedback = await response.Content.ReadFromJsonAsync<Feedback>();
-            if (newFeedback != null) message = $"{newFeedback.Name}, ваше сообщение отправлено!";
+            var response = await Http.PostAsJsonAsync("Feedback", feedback);
+            if (response.IsSuccessStatusCode)
+            {
+                var newFeedback = await response.Content.ReadFromJsonAsync<Feedback>();
+                if (newFeedback != null) message = $"{newFeedback.Name}, ваше сообщение отправлено!";
+                feedback = new Feedback();
+            }
         }
-        feedback = new Feedback();
+        else 
+        {
+            editContext.GetValidationMessages();
+        }
     }
 }
 
