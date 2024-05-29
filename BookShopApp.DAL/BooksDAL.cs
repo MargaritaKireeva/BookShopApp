@@ -1,5 +1,6 @@
 ﻿using BookShopApp.DAL.Interfaces;
 using BookShopApp.Shared;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
@@ -12,14 +13,11 @@ namespace BookShopApp.DAL
 {
     public class BooksDAL : IBooksDAL
     {
-        private static string _connectionString = "mongodb://localhost:27017";
-
-
         private readonly IMongoCollection<Book> _collection;
-        public BooksDAL()
+        public BooksDAL(IOptions<DbSettings> dbSettings)
         {
-            MongoClient mongoClient = new MongoClient(_connectionString);
-            _collection = mongoClient.GetDatabase("books_db").GetCollection<Book>("books");
+            MongoClient mongoClient = new MongoClient(dbSettings.Value.ConnectionString);
+            _collection = mongoClient.GetDatabase(dbSettings.Value.DbName).GetCollection<Book>(dbSettings.Value.BooksCollectionName);
         }
 
         public async Task<List<Book>> GetAllAsync(string id)

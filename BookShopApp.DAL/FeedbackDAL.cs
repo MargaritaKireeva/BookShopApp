@@ -1,5 +1,6 @@
 ﻿using BookShopApp.DAL.Interfaces;
 using BookShopApp.Shared;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,11 @@ namespace BookShopApp.DAL
 {
     public class FeedbackDAL : IFeedbackDAL
     {
-        private static string _connectionString = "mongodb://localhost:27017";
-
         private readonly IMongoCollection<Feedback> _collection;
-        public FeedbackDAL()
+        public FeedbackDAL(IOptions<DbSettings> dbSettings)
         {
-            MongoClient mongoClient = new MongoClient(_connectionString);
-            _collection = mongoClient.GetDatabase("books_db").GetCollection<Feedback>("feedbacks");
+            MongoClient mongoClient = new MongoClient(dbSettings.Value.ConnectionString);
+            _collection = mongoClient.GetDatabase(dbSettings.Value.DbName).GetCollection<Feedback>(dbSettings.Value.FeedbackCollectionName);
         }
         public async Task<Feedback> AddAsync(Feedback feedback) 
         {
