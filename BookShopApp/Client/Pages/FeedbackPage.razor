@@ -38,9 +38,13 @@
             var response = await Http.PostAsJsonAsync("Feedback", feedback);
             if (response.IsSuccessStatusCode)
             {
-                var newFeedback = await response.Content.ReadFromJsonAsync<Feedback>();
-                if (newFeedback != null) message = $"{newFeedback.Name}, ваше сообщение отправлено!";
-                feedback = new Feedback();
+                // var feedbackDb = await response.Content.ReadFromJsonAsync<Feedback>();
+                // if (feedbackDb != null)
+                // {
+                    message = $"{feedback.Name}, ваше сообщение отправлено!";
+                    feedback = new Feedback();
+                // }
+                // else message = "Произошла ошибка";
             }
         }
         else 

@@ -1,6 +1,10 @@
+using BookShopApp.BLL;
 using BookShopApp.BLL.Interfaces;
+using BookShopApp.Server.RabbitMQ;
 using BookShopApp.Shared;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 
 namespace BookShopApp.Server.Controllers
 {
@@ -11,19 +15,24 @@ namespace BookShopApp.Server.Controllers
         private IGenresBL _genresBL;
         private IBooksBL _booksBL;
         private readonly ILogger<GenresController> _logger;
+        private readonly IRabbitMqService _mqService;
 
-        public GenresController(ILogger<GenresController> logger, IGenresBL genresBL, IBooksBL booksBL)
+        public GenresController(ILogger<GenresController> logger, IGenresBL genresBL, IBooksBL booksBL, IRabbitMqService mqService)
         {
             _logger = logger;
             _genresBL = genresBL;
             _booksBL = booksBL;
+            _mqService = mqService;
         }
 
         [HttpGet]
         [Route("/[controller]")]
-        public async Task<ActionResult<IEnumerable<Genre>>> Get()
+        public async Task<ActionResult<List<Genre>>> Get()
         {
-/*            List<Genre> genres = await _genresBL.GetAllAsync();*/
+            /*            List<Genre> genres = await _genresBL.GetAllAsync();*//*
+            await _genresBL.GetAllAsync();
+            string genres = _mqService.ConsumeStr("GetGenres");
+            return genres.ToJson();*/
             return await _genresBL.GetAllAsync();
         }
 

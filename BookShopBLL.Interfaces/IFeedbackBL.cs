@@ -10,5 +10,6 @@ namespace BookShopApp.BLL.Interfaces
     public interface IFeedbackBL
     {
         public Task<Feedback> AddAsync(Feedback feedback);
+        public Task<Feedback> AddAsync(string feedbackStr);
     }
 }

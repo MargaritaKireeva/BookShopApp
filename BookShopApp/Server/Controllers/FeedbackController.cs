@@ -15,11 +15,11 @@ namespace BookShopApp.Server.Controllers
         private readonly ILogger<GenresController> _logger;
         private readonly IRabbitMqService _mqService;
 
-        public FeedbackController(ILogger<GenresController> logger, IFeedbackBL feedbackBL, IRabbitMqService mqService)
+        public FeedbackController(ILogger<GenresController> logger, IFeedbackBL feedbackBL)
         {
             _logger = logger;
             _feedbackBL = feedbackBL;
-            _mqService = mqService;
+            _mqService = SingleRabbitMQ.Instance.Rabbit;
 
         }
         /*
@@ -32,18 +32,18 @@ namespace BookShopApp.Server.Controllers
 
         // POST api/<FeedbackController>
         [HttpPost]
-        public async Task<ActionResult<Feedback>> Post([FromBody] Feedback feedback)
+        public async Task<ActionResult> Post([FromBody] Feedback feedback)
         {
-           var feedbackFromDb = await _feedbackBL.AddAsync(feedback);
-            if (feedbackFromDb != null) 
+            string message;
+            _mqService.SendMessage(feedback, "Feedback");
+            return Ok();
+/*            string message = null;
+            while (message == null)
             {
-                string message = $"{feedbackFromDb.Name} отправил сообщение:" +
-                    $"\n{feedbackFromDb.Message}" +
-                    $"\n Дата: {feedbackFromDb.Date}" +
-                    $"\n Почта: {feedbackFromDb.Email}";
-                _mqService.SendMessage(message);
-            }
-            return feedbackFromDb;
+                message = _mqService.Message;
+                await Task.Delay(25);
+
+            }*/
         }
 
 

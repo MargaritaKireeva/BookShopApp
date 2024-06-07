@@ -10,13 +10,17 @@ namespace BookShopApp.BLL
     public class GenresBL : IGenresBL
     {
         public static IGenresDAL _genresDAL;
-        public GenresBL(IGenresDAL genresDAL)
+        public static IRabbitMqServiceBL _rabbitMqService;
+        public GenresBL(IGenresDAL genresDAL, IRabbitMqServiceBL rabbitMqService)
         {
             _genresDAL = genresDAL;
+            _rabbitMqService = rabbitMqService;
         }
         public async Task<List<Genre>> GetAllAsync()
         {
-            return await _genresDAL.GetAllAsync();
+            var genres = await _genresDAL.GetAllAsync();
+            /*_rabbitMqService.SendMessage(genres, "GetGenres");*/
+            return genres;
         }
 /*        public async Task<Genre> GetByIDAsync(int BookID)
         {

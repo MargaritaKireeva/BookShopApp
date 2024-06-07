@@ -17,9 +17,12 @@ builder.Services.AddScoped<IBooksBL, BooksBL>();
 builder.Services.AddScoped<IBooksDAL, BooksDAL>();
 builder.Services.AddScoped<IFeedbackBL, FeedbackBL>();
 builder.Services.AddScoped<IFeedbackDAL, FeedbackDAL>();
+builder.Services.AddScoped<IRabbitMqServiceBL, RabbitMqServiceBL>();
 builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 builder.Services.Configure<DbSettings>(
     builder.Configuration.GetSection("BooksDb"));
+/*builder.Services.Configure<RabbitMqService>(
+    builder.Configuration.GetSection("RabbitMqString"));*/
 
 builder.Services.AddControllersWithViews();
 /* .AddJsonOptions(
