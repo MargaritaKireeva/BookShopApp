@@ -19,7 +19,6 @@ namespace Consumer
 {
     public class Program
     {
-        static string connectionString = "amqps://vxngjiis:EyAnmCZGndIu_Dl_DFmCwXdg_PGcU6pi@cow.rmq2.cloudamqp.com/vxngjiis";
         static void Main(string[] args)
         {
             ListenForIntegrationEvents();
@@ -33,10 +32,14 @@ namespace Consumer
                 DbName = ConfigurationManager.AppSettings.Get("MongoDbName"),
                 FeedbackCollectionName = ConfigurationManager.AppSettings.Get("FeedbackCollectionName"),
             };
+            RabbitMqConnection rabbitMqConnection = new RabbitMqConnection
+            {
+                ConnectionString = ConfigurationManager.AppSettings.Get("RabbitMqString")
+            };
             IFeedbackDAL feedbackDAL = new FeedbackDAL(dbSettings);
             IFeedbackBL _feedbackBL = new FeedbackBL(feedbackDAL);
-            SingleRabbitMQ._feedbackBL = _feedbackBL;
-            var _mqService = new RabbitMqService(_feedbackBL);
+            
+            var _mqService = new RabbitMqService(_feedbackBL, rabbitMqConnection);
             _mqService.Consume("Feedback");
 /*            string message = null;
             var factory = new ConnectionFactory() { Uri = new Uri(connectionString) };

@@ -10,7 +10,7 @@ namespace BookShopApp.Shared
 {
     public class SingleRabbitMQ
     {
-
+/*
         private static SingleRabbitMQ _instance;
         public static IFeedbackBL _feedbackBL { get; set; }
         public SingleRabbitMQ(IFeedbackBL feedbackBL)
@@ -18,6 +18,6 @@ namespace BookShopApp.Shared
             _feedbackBL = feedbackBL;
         }
         public static SingleRabbitMQ Instance => _instance = _instance ?? new SingleRabbitMQ(_feedbackBL);
-        public RabbitMqService Rabbit => new RabbitMqService(_feedbackBL);
+        public RabbitMqService Rabbit => new RabbitMqService(_feedbackBL);*/
     }
 }

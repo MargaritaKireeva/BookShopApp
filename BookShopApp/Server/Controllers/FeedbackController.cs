@@ -15,20 +15,13 @@ namespace BookShopApp.Server.Controllers
         private readonly ILogger<GenresController> _logger;
         private readonly IRabbitMqService _mqService;
 
-        public FeedbackController(ILogger<GenresController> logger, IFeedbackBL feedbackBL)
+        public FeedbackController(ILogger<GenresController> logger, IFeedbackBL feedbackBL, IRabbitMqService mqService)
         {
             _logger = logger;
             _feedbackBL = feedbackBL;
-            _mqService = SingleRabbitMQ.Instance.Rabbit;
+            _mqService = mqService;
 
         }
-        /*
-                [HttpGet]
-                public IEnumerable<string> Get()
-                {
-                    return new string[] { "value1", "value2" };
-                }
-        */
 
         // POST api/<FeedbackController>
         [HttpPost]

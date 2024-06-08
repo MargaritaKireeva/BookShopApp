@@ -1,6 +1,7 @@
 ﻿using BookShopApp.BLL;
 using BookShopApp.BLL.Interfaces;
 using BookShopApp.Shared;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -11,15 +12,19 @@ namespace BookShopApp.Server.RabbitMQ
 {
     public class RabbitMqService : IRabbitMqService
     {
-        private static int MSG_COUNT = 10000;
         private IFeedbackBL _feedbackBL;
-        private string connectionString;
         private ConnectionFactory factory;
-        public RabbitMqService(IFeedbackBL feedbackBL)
+        public RabbitMqService(IFeedbackBL feedbackBL, IOptions<RabbitMqConnection> connection)
         {
             _feedbackBL = feedbackBL;
-            connectionString = "amqps://vxngjiis:EyAnmCZGndIu_Dl_DFmCwXdg_PGcU6pi@cow.rmq2.cloudamqp.com/vxngjiis";
-            factory = new ConnectionFactory() { Uri = new Uri(connectionString) };
+           /* connectionString = "amqps://vxngjiis:EyAnmCZGndIu_Dl_DFmCwXdg_PGcU6pi@cow.rmq2.cloudamqp.com/vxngjiis";*/
+            factory = new ConnectionFactory() { Uri = new Uri(connection.Value.ConnectionString) };
+        }
+        public RabbitMqService(IFeedbackBL feedbackBL, RabbitMqConnection connection)
+        {
+            _feedbackBL = feedbackBL;
+            /* connectionString = "amqps://vxngjiis:EyAnmCZGndIu_Dl_DFmCwXdg_PGcU6pi@cow.rmq2.cloudamqp.com/vxngjiis";*/
+            factory = new ConnectionFactory() { Uri = new Uri(connection.ConnectionString) };
         }
         public RabbitMqService()
         {
@@ -93,7 +98,6 @@ namespace BookShopApp.Server.RabbitMQ
         public void Consume(string queueName) //async Task<
         {
             string message = null;
-            factory = new ConnectionFactory() { Uri = new Uri(connectionString) };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             /*            lock (_lock)

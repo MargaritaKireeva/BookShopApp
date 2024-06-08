@@ -21,8 +21,8 @@ builder.Services.AddScoped<IRabbitMqServiceBL, RabbitMqServiceBL>();
 builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 builder.Services.Configure<DbSettings>(
     builder.Configuration.GetSection("BooksDb"));
-/*builder.Services.Configure<RabbitMqService>(
-    builder.Configuration.GetSection("RabbitMqString"));*/
+builder.Services.Configure<RabbitMqConnection>(
+    builder.Configuration.GetSection("RabbitMq"));
 
 builder.Services.AddControllersWithViews();
 /* .AddJsonOptions(
