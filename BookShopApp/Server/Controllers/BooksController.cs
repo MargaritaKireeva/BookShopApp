@@ -21,11 +21,8 @@ namespace BookShopApp.Server.Controllers
 
 
         [HttpGet("{genreId:length(24)}")]
-        /*[Route("genres/{genre}")]*/
         public async Task<ActionResult<IEnumerable<Book>>> Get(string genreId)
         {
-            /*genre = "Фантастика";*/
-           /* var books = */
             return await _booksBL.GetAllAsync(genreId);
         }
 

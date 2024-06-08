@@ -40,8 +40,6 @@ namespace BookShopApp.Server.Controllers
         [Route("/Genres/{genreId}")]
         public async Task<ActionResult<IEnumerable<Book>>> Get(string genreId)
         {
-            /*genre = "Фантастика";*/
-            /* var books = */
             var books = await _booksBL.GetAllAsync(genreId);
             return books;
         }
@@ -50,8 +48,6 @@ namespace BookShopApp.Server.Controllers
         [Route("/Genres/{genreId}/{bookId}")]
         public async Task<ActionResult<Book>> GetBookById(string bookId)
         {
-            /*genre = "Фантастика";*/
-            /* var books = */
             var book = await _booksBL.GetByIdAsync(bookId);
             return book;
         }

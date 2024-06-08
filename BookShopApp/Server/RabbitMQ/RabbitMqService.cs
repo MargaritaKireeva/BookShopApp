@@ -17,13 +17,11 @@ namespace BookShopApp.Server.RabbitMQ
         public RabbitMqService(IFeedbackBL feedbackBL, IOptions<RabbitMqConnection> connection)
         {
             _feedbackBL = feedbackBL;
-           /* connectionString = "amqps://vxngjiis:EyAnmCZGndIu_Dl_DFmCwXdg_PGcU6pi@cow.rmq2.cloudamqp.com/vxngjiis";*/
             factory = new ConnectionFactory() { Uri = new Uri(connection.Value.ConnectionString) };
         }
         public RabbitMqService(IFeedbackBL feedbackBL, RabbitMqConnection connection)
         {
             _feedbackBL = feedbackBL;
-            /* connectionString = "amqps://vxngjiis:EyAnmCZGndIu_Dl_DFmCwXdg_PGcU6pi@cow.rmq2.cloudamqp.com/vxngjiis";*/
             factory = new ConnectionFactory() { Uri = new Uri(connection.ConnectionString) };
         }
         public RabbitMqService()
@@ -95,14 +93,11 @@ namespace BookShopApp.Server.RabbitMQ
 
             return message;
         }
-        public void Consume(string queueName) //async Task<
+        public void Consume(string queueName)
         {
             string message = null;
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
-            /*            lock (_lock)
-                        { if (string.IsNullOrEmpty(message))
-                            {*/
             {
                 var consumer = new EventingBasicConsumer(channel);
                 consumer.Received += async (model, ea) =>
@@ -119,15 +114,6 @@ namespace BookShopApp.Server.RabbitMQ
                 channel.BasicConsume(queue: queueName,
                      autoAck: false,
                      consumer: consumer);
-                /*                    Console.WriteLine(" Press [enter] to exit.");
-                                    Console.ReadLine();*/
-                /*                     await Task.Run(() =>
-                         while (string.IsNullOrEmpty(message))
-                                     {
-                                         Monitor.Wait(_lock);
-                                     }
-
-                                 });*/
                 Console.WriteLine("Press Enter to exit");
                 Console.ReadLine();
             }
